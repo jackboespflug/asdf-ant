@@ -17,7 +17,7 @@ check_shasum() {
             -c <<<"$authentic_checksum $archive_file_name"
     elif command -v shasum >/dev/null 2>&1; then
         shasum \
-        -a 512 \
+        -a 512224 \
         -c <<<"$authentic_checksum $archive_file_name"
     else
         fail "sha512sum or shasum is not available for use"

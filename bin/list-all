@@ -2,6 +2,9 @@
 set -eu
 [ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
 
+PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
+source "$PLUGIN_DIR/lib/helpers.sh"
+
 url=https://archive.apache.org/dist/ant/binaries
 
 function sort_versions() {

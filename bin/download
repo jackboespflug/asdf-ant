@@ -3,6 +3,7 @@ set -eu
 [ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
 
 PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
+source "$PLUGIN_DIR/lib/helpers.sh"
 
 check_shasum() {
     local archive_file_name=$1

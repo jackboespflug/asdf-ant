@@ -2,6 +2,7 @@
 set -eu
 [ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
 
-if asdf current java > /dev/null 2>&1; then
-  export JAVA_HOME=$(asdf where java)
+if asdf current java >/dev/null 2>&1; then
+  JAVA_HOME=$(asdf where java)
+  export $JAVA_HOME
 fi

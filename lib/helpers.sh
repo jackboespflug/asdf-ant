@@ -2,14 +2,14 @@
 set -eu
 [ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
 
-get_platform () {
+get_platform() {
   local silent=${1:-}
   local platform=""
 
   platform="$(uname | tr '[:upper:]' '[:lower:]')"
 
   case "$platform" in
-    linux|darwin)
+    linux | darwin)
       [ -z "$silent" ] && msg "Platform '${platform}' supported!"
       ;;
     *)
@@ -20,15 +20,15 @@ get_platform () {
   echo -n "$platform"
 }
 
-msg () {
+msg() {
   echo -e "\033[32m$1\033[39m" >&2
 }
 
-err () {
+err() {
   echo -e "\033[31m$1\033[39m" >&2
 }
 
-fail () {
+fail() {
   err "$1"
   exit 1
 }

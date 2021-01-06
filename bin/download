@@ -19,20 +19,20 @@ check_shasum() {
       -c <<<"$authentic_checksum $archive_file_name"
   elif command -v shasum >/dev/null 2>&1; then
     shasum \
-      -a 512224 \
+      -a 512256 \
       -c <<<"$authentic_checksum $archive_file_name"
   else
     fail "sha512sum or shasum is not available for use"
   fi
 }
 
-download_ant () {
+download_ant() {
   local version=$1
   local download_path=$2
 
   curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz" \
     "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz"
-    
+
   curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz.sha512" \
     "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz.sha512"
 

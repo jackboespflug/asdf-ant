@@ -9,30 +9,30 @@ source "$PLUGIN_DIR/lib/helpers.sh"
 
 # used only if the ASDF_DOWNLOAD_PATH env is not set
 mktmp () {
-    local tempdir=""
-    local platform=""
-    platform="$(get_platform)"
+  local tempdir=""
+  local platform=""
+  platform="$(get_platform)"
 
-    if [ "linux" = "$platform" ] ; then
-        tempdir=$(mktemp -d asdf-ant.XXXX)
-    else
-        tempdir=$(mktemp -dt asdf-ant.XXXX)
-    fi
+  if [ "linux" = "$platform" ] ; then
+    tempdir=$(mktemp -d asdf-ant.XXXX)
+  else
+    tempdir=$(mktemp -dt asdf-ant.XXXX)
+  fi
 
-    echo -n "$tempdir"
+  echo -n "$tempdir"
 }
 
 install_ant() {
-	local version="$1"
-	local download_path="$2"
-	local install_path="$3"
+  local version="$1"
+  local download_path="$2"
+  local install_path="$3"
 
-	if [ -z "$download_path" ] ; then
-		download_path="$(mktmp)"
-		ASDF_INSTALL_VERSION="$version" ASDF_DOWNLOAD_PATH="$download_path" "$PLUGIN_DIR/bin/download"
-	fi
+  if [ -z "$download_path" ]; then
+    download_path="$(mktmp)"
+    ASDF_INSTALL_VERSION="$version" ASDF_DOWNLOAD_PATH="$download_path" "$PLUGIN_DIR/bin/download"
+  fi
 
-	tar -C "$install_path" -xzf "${download_path}/archive.tar.gz" --strip-components 1
+  tar -C "$install_path" -xzf "${download_path}/archive.tar.gz" --strip-components 1
 }
 
 install_ant "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"

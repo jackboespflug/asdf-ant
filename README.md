@@ -1,57 +1,62 @@
-# asdf-ant
+<div align="center">
 
-[Ant](http://ant.apache.org/)
-plugin for the [asdf version manager](https://github.com/asdf-vm/asdf)
+# asdf-ant ![Build](https://github.com/jackboespflug/asdf-ant/workflows/Build/badge.svg) ![Lint](https://github.com/jackboespflug/asdf-ant/workflows/Lint/badge.svg)
 
-## Requirements
+[ant](http://ant.apache.org/) plugin for the [asdf version manager](https://asdf-vm.com).
 
-### MacOS
+</div>
 
-* [GNU Core Utils](http://www.gnu.org/software/coreutils/coreutils.html) - `brew install coreutils`
+# Contents
 
-### Linux (Debian)
+- [Dependencies](#dependencies)
+- [Install](#install)
+- [Why?](#why)
+- [Contributing](#contributing)
+- [License](#license)
 
-* [GNU Core Utils](http://www.gnu.org/software/coreutils/coreutils.html) - `apt install coreutils`
-* [curl](https://curl.haxx.se) - `apt install curl`
+# Dependencies
 
-## Install
+- `bash`, `curl`, `tar`: generic POSIX utilities.
 
-After installing [asdf](https://github.com/asdf-vm/asdf),
-you can add this plugin like this:
+# Install
 
-```bash
-asdf plugin-add ant https://github.com/jackboespflug/asdf-ant.git
+Plugin:
+
+```shell
+asdf plugin add ant
+# or
+asdf plugin add https://github.com/jackboespflug/asdf-ant.git
 ```
 
-and install new versions like this:
+ant:
 
-```bash
-asdf install ant 1.10.9
+```shell
+# Show all installable versions
+asdf list-all ant
+
+# Install specific version
+asdf install ant latest
+
+# Set a version globally (on your ~/.tool-versions file)
+asdf global ant latest
+
+# Now ant commands are available
+ant -version
 ```
 
-and switch versions like this:
+Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
+install & manage versions.
 
-```bash
-asdf global ant 1.10.8
-```
+# Why?
 
-## Reading
+Sometimes you still need Ant.
 
-Read the [asdf readme](https://github.com/asdf-vm/asdf)
-for instructions on how to install and manage versions of any language.
+# Contributing
 
-## Development
+Contributions of any kind welcome! See the [contributing guide](contributing.md).
 
-* asdf's [creating-plugins.md](https://github.com/asdf-vm/asdf/blob/master/docs/creating-plugins.md)
+[Thanks goes to these contributors](https://github.com/jackboespflug/asdf-ant/graphs/contributors)!
 
-## Contributing
+# License
 
-Feel free to create an issue or pull request if you find a bug.
-
-## Issues
-
-* Assumes Linux, FreeBSD, or Mac
-
-## License
-
-MIT License
+See [LICENSE](LICENSE) © [Jack Boespflug](https://github.com/jackboespflug/)

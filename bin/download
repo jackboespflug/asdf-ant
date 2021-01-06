@@ -15,11 +15,13 @@ check_shasum() {
   authentic_checksum=$(<"$authentic_checksum_file")
 
   if command -v sha512sum >/dev/null 2>&1; then
+    msg "verifying download with sha512sum"
     sha512sum \
       -c <<<"$authentic_checksum $archive_file_name"
   elif command -v shasum >/dev/null 2>&1; then
+    msg "verifying download with shasum"
     shasum \
-      -a 512256 \
+      -a 512 \
       -c <<<"$authentic_checksum $archive_file_name"
   else
     fail "sha512sum or shasum is not available for use"

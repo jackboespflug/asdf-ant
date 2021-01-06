@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -eu
+[ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
+
+url=https://archive.apache.org/dist/ant/binaries
+
+function sort_versions() {
+  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' | \
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+}
+
+function ant_versions() {
+  curl -sL "$url" \
+    | grep -oE '>apache-ant-[0-9\.]+-bin.tar.gz</a>' \
+    | uniq \
+    | sed 's|>apache-ant-||' \
+    | sed 's|-bin.tar.gz</a>||'
+}
+
+versions="$(ant_versions | sort_versions)"
+
+echo $versions

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -eu
+[ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
+
+rm -rf "${ASDF_INSTALL_PATH}"

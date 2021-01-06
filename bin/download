@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -eu
+[ "${BASH_VERSINFO[0]}" -ge 3 ] && set -o pipefail
+
+PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
+
+check_shasum() {
+    local archive_file_name=$1
+    local authentic_checksum_file=$2
+    local authentic_checksum=""
+
+    authentic_checksum=$(<"$authentic_checksum_file")
+
+    if command -v sha512sum >/dev/null 2>&1; then
+        sha512sum \
+            -c <<<"$authentic_checksum $archive_file_name"
+    elif command -v shasum >/dev/null 2>&1; then
+        shasum \
+        -a 512 \
+        -c <<<"$authentic_checksum $archive_file_name"
+    else
+        fail "sha512sum or shasum is not available for use"
+    fi
+}
+
+download_ant () {
+    local version=$1
+    local download_path=$2
+
+    curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz" \
+      "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz"
+      
+    curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz.sha512" \
+      "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz.sha512"
+
+    echo 'verifying checksum'
+    if ! check_shasum "${download_path}/archive.tar.gz" "${download_path}/archive.tar.gz.sha512"; then
+        rm -f "${download_path}/archive.tar.gz"
+        rm -f "${download_path}/archive.tar.gz.sha512"
+        fail "Authenticity of package archive can not be assured. Exiting."
+    else
+      msg "checksum verified"
+    fi
+}
+
+download_ant "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"

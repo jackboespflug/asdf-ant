@@ -16,13 +16,13 @@ check_shasum() {
 
   if command -v sha512sum >/dev/null 2>&1; then
     msg "verifying download with sha512sum"
-    sha=$(sha512sum $archive_file_name | awk '{print $1}')
+    sha=$(sha512sum "$archive_file_name" | awk '{print $1}')
     if [[ "$sha" != "$authentic_checksum" ]]; then
       fail "no properly formatted SHA512 checksum lines found"
     fi
   elif command -v shasum >/dev/null 2>&1; then
     msg "verifying download with shasum"
-    sha=$(shasum -a 512 $archive_file_name | awk '{print $1}')
+    sha=$(shasum -a 512 "$archive_file_name" | awk '{print $1}')
     if [[ "$sha" != "$authentic_checksum" ]]; then
       fail "no properly formatted SHA512 checksum lines found"
     fi

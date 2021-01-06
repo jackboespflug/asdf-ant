@@ -30,7 +30,7 @@ install_ant() {
 		ASDF_INSTALL_VERSION="$version" ASDF_DOWNLOAD_PATH="$download_path" "$PLUGIN_DIR/bin/download"
 	fi
 
-	tar -C "$install_path" -xzf "${download_path}/archive.tar.gz"
+	tar -C "$install_path" -xzf "${download_path}/archive.tar.gz" --strip-components 1
 }
 
 install_ant "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"

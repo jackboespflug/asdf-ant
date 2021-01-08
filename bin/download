@@ -8,24 +8,25 @@ PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
 source "$PLUGIN_DIR/lib/helpers.sh"
 
 check_shasum() {
-  local archive_file_name=$1
-  local authentic_checksum_file=$2
-  local authentic_checksum=""
+  local archive_file=$1
+  local checksum_file=$2
+  local checksum=""
 
-  authentic_checksum=$(<"$authentic_checksum_file")
+  checksum=$(<"$checksum_file")
 
   if command -v sha512sum >/dev/null 2>&1; then
-    sha=$(sha512sum "$archive_file_name" | awk '{print $1}')
-    if [[ "$sha" != "$authentic_checksum" ]]; then
-      fail "invalid checksum"
+    sha=$(sha512sum "$archive_file" | awk '{print $1}')
+    if [[ "$sha" != "$checksum" ]]; then
+      return 1
     fi
   elif command -v shasum >/dev/null 2>&1; then
-    sha=$(shasum -a 512 "$archive_file_name" | awk '{print $1}')
-    if [[ "$sha" != "$authentic_checksum" ]]; then
-      fail "invalid checksum"
+    sha=$(shasum -a 512 "$archive_file" | awk '{print $1}')
+    if [[ "$sha" != "$checksum" ]]; then
+      return 1
     fi
   else
-    fail "sha512sum or shasum is not installed"
+    err "sha512sum or shasum is not installed"
+    return 1
   fi
 }
 
@@ -43,8 +44,6 @@ download_ant() {
     rm -f "${download_path}/archive.tar.gz"
     rm -f "${download_path}/archive.tar.gz.sha512"
     fail "Authenticity of package archive can not be assured. Exiting."
-  else
-    msg "checksum verified"
   fi
 }
 

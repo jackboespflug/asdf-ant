@@ -7,7 +7,6 @@ PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
 # shellcheck source=/dev/null
 source "$PLUGIN_DIR/lib/helpers.sh"
 
-# used only if the ASDF_DOWNLOAD_PATH env is not set
 mktmp() {
   local tempdir=""
   local platform=""

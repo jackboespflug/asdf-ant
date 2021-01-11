@@ -32,7 +32,7 @@ install_ant() {
   fi
 
   tar -C "$install_path" -xzf "${download_path}/archive.tar.gz" --strip-components 1
-  $install_path/ant -f $install_path/fetch.xml -Ddest=system
+  $install_path/bin/ant -f $install_path/fetch.xml -Ddest=system
 }
 
 install_ant "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH" "$ASDF_INSTALL_PATH"

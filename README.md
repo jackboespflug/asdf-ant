@@ -1,8 +1,12 @@
 <div align="center">
 
-# asdf-ant ![Build](https://github.com/jackboespflug/asdf-ant/workflows/Build/badge.svg) ![Lint](https://github.com/jackboespflug/asdf-ant/workflows/Lint/badge.svg)
+# asdf-ant
 
-[ant](http://ant.apache.org/) plugin for the [asdf version manager](https://asdf-vm.com).
+![Build](https://github.com/jackboespflug/asdf-ant/workflows/Build/badge.svg)
+![Lint](https://github.com/jackboespflug/asdf-ant/workflows/Lint/badge.svg)
+[![License](https://img.shields.io/github/license/jackboespflug/asdf-ant?label=License&style=plastic&color=success)](https://github.com/jackboespflug/asdf-ant/blob/master/LICENSE)
+
+[Ant](https://ant.apache.org) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
@@ -10,7 +14,6 @@
 
 - [Dependencies](#dependencies)
 - [Install](#install)
-- [Why?](#why)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -46,10 +49,6 @@ ant -version
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
 install & manage versions.
-
-# Why?
-
-Sometimes you still need Ant.
 
 # Contributing
 

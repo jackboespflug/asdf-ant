@@ -67,17 +67,17 @@ download_ant() {
   local link="https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz"
 
   curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz" "$link"
-    
 
   local ext="sha512"
 
   # check if sha512 checksum file is available
-  local status=$(curl --head --silent "$link.$ext" | head -n 1)
+  local status
+  status=$(curl --head --silent "$link.$ext" | head -n 1)
   if echo "$status" | grep -q 404; then
-      # not found - fall back to  the sha1 checksum file
-      local ext="sha1"
+    # not found - fall back to  the sha1 checksum file
+    local ext="sha1"
   fi
-  
+
   curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz.$ext" "$link.$ext"
 
   if ! check_shasum "${download_path}/archive.tar.gz" "${download_path}/archive.tar.gz.$ext" "$ext"; then

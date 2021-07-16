@@ -7,7 +7,7 @@ PLUGIN_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
 # shellcheck source=/dev/null
 source "$PLUGIN_DIR/lib/helpers.sh"
 
-check_shasum() {
+check_sha512() {
   local archive_file=$1
   local checksum_file=$2
   local checksum=""
@@ -26,23 +26,63 @@ check_shasum() {
     fi
   else
     err "sha512sum or shasum is not installed"
-    return 1
+    return 2
+  fi
+}
+
+check_sha1() {
+  local archive_file=$1
+  local checksum_file=$2
+  local checksum=""
+
+  checksum=$(<"$checksum_file")
+
+  if command -v sha1sum >/dev/null 2>&1; then
+    sha=$(sha1sum "$archive_file" | awk '{print $1}')
+    if [[ "$sha" != "$checksum" ]]; then
+      return 1
+    fi
+  elif command -v shasum >/dev/null 2>&1; then
+    sha=$(shasum -a 1 "$archive_file" | awk '{print $1}')
+    if [[ "$sha" != "$checksum" ]]; then
+      return 1
+    fi
+  else
+    err "sha1sum or shasum is not installed"
+    return 2
+  fi
+}
+
+check_shasum() {
+  if [[ "$3" = "sha512" ]]; then
+    check_sha512 "$@"
+  else
+    check_sha1 "$@"
   fi
 }
 
 download_ant() {
   local version=$1
   local download_path=$2
+  local link="https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz"
 
-  curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz" \
-    "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz"
+  curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz" "$link"
+    
 
-  curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz.sha512" \
-    "https://archive.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz.sha512"
+  local ext="sha512"
 
-  if ! check_shasum "${download_path}/archive.tar.gz" "${download_path}/archive.tar.gz.sha512"; then
+  # check if sha512 checksum file is available
+  local status=$(curl --head --silent "$link.$ext" | head -n 1)
+  if echo "$status" | grep -q 404; then
+      # not found - fall back to  the sha1 checksum file
+      local ext="sha1"
+  fi
+  
+  curl --retry 3 --retry-delay 3 -o "${download_path}/archive.tar.gz.$ext" "$link.$ext"
+
+  if ! check_shasum "${download_path}/archive.tar.gz" "${download_path}/archive.tar.gz.$ext" "$ext"; then
     rm -f "${download_path}/archive.tar.gz"
-    rm -f "${download_path}/archive.tar.gz.sha512"
+    rm -f "${download_path}/archive.tar.gz.$ext"
     fail "Authenticity of package archive can not be assured. Exiting."
   fi
 }

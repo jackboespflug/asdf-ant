@@ -16,10 +16,10 @@ function sort_versions() {
 
 function ant_versions() {
   curl -sL "$url" |
-    grep -oE '>apache-ant-[0-9\.]+-bin.tar.gz</a>' |
-    uniq |
+    grep -oE '>apache-ant-[0-9\.]+-bin.tar.gz.sha.*</a>' |
     sed 's|>apache-ant-||' |
-    sed 's|-bin.tar.gz</a>||'
+    sed 's|-bin.tar.gz.sha.*</a>||' |
+    uniq
 }
 
 versions="$(ant_versions | sort_versions | tr '\n' ' ')"
